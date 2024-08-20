@@ -1,4 +1,15 @@
-# GitSight
+# GitSight — Autonomous Software Engineering Platform
+
+<div align="center">
+
+[![Maintained by Yousef Khaled](https://img.shields.io/badge/Enhanced%20%26%20Architected%20by-Yousef%20Khaled%20Gouda-blue?style=for-the-badge&logo=github)](https://github.com/yousefkhaled2005)
+[![Autonomous SE Platform](https://img.shields.io/badge/Agentic%20Platform-Autonomous%20Software%20Engineering-cyan?style=for-the-badge)](https://github.com/yousefkhaled2005/GitSight-autonomous-se-platform)
+[![Systems Architecture](https://img.shields.io/badge/Senior%20AI%20Systems%20Architect-21%2B%20Yrs-purple?style=for-the-badge)](https://github.com/yousefkhaled2005/yousef-khaled-cv)
+
+[**Executive CV & Research**](https://github.com/yousefkhaled2005/yousef-khaled-cv) · [**Original Upstream**](https://github.com/abdulsamad183/GitSight-autonomous-se-platform)
+
+---
+</div>
 
 GitSight is an open-source platform for repository-aware software engineering. Paste a public GitHub URL to analyze code structure, search indexed symbols, explore dependency graphs, chat with an LLM grounded in your codebase, generate documentation, and review pull requests.
 

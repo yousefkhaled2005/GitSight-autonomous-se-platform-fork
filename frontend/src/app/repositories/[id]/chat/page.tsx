@@ -7,6 +7,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 
 import { BranchSelector } from "@/components/branch-selector";
 import { RepositoryChat } from "@/components/repository-chat";
+import { RepositorySubNav } from "@/components/repository-sub-nav";
 import { buttonVariants } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import {
@@ -89,6 +90,12 @@ export default function RepositoryChatPage() {
 
         {detail && (
           <>
+            <RepositorySubNav
+              repositoryId={repositoryId}
+              branch={selectedBranch}
+              activeTab="chat"
+            />
+
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h1 className="text-2xl font-semibold">

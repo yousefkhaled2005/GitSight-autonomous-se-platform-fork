@@ -1,125 +1,27 @@
 "use client";
 
-import Link from "next/link";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
-
-import { BranchSelector } from "@/components/branch-selector";
 import { RepositoryChat } from "@/components/repository-chat";
-import { RepositorySubNav } from "@/components/repository-sub-nav";
-import { buttonVariants } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
-import {
-  useRepositoryBranches,
-  useRepositoryDetails,
-} from "@/hooks/use-repository-data";
+import { useRepositoryWorkspace } from "@/components/repository-workspace-context";
 
 export default function RepositoryChatPage() {
-  const params = useParams<{ id: string }>();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const repositoryId = params.id;
+  const { repositoryId, selectedBranch, detail } = useRepositoryWorkspace();
 
-  const branchFromUrl = searchParams.get("branch");
-  const [branchOverride, setBranchOverride] = useState<string | null>(null);
-
-  const branchesQuery = useRepositoryBranches(repositoryId);
-  const branches = branchesQuery.data ?? [];
-
-  const selectedBranch =
-    branchOverride ?? branchFromUrl ?? branches[0]?.branch ?? null;
-
-  const detailsQuery = useRepositoryDetails(repositoryId, selectedBranch);
-  const detail = detailsQuery.data;
-
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      router.replace("/login");
-    }
-  }, [authLoading, isAuthenticated, router]);
-
-  const handleBranchChange = useCallback((branch: string) => {
-    setBranchOverride(branch);
-  }, []);
-
-  const initialLoading =
-    (branchesQuery.isLoading && branches.length === 0) ||
-    (detailsQuery.isLoading && !detail);
-  const loadError =
-    branchesQuery.error instanceof Error
-      ? branchesQuery.error.message
-      : detailsQuery.error instanceof Error
-        ? detailsQuery.error.message
-        : null;
+  if (!detail) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-violet-50/50 via-background to-background dark:from-violet-950/20">
-      <header className="border-b bg-background/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <Link
-              href={`/repositories/${repositoryId}${
-                selectedBranch ? `?branch=${encodeURIComponent(selectedBranch)}` : ""
-              }`}
-              className={buttonVariants({ variant: "ghost", size: "sm" })}
-            >
-              <ArrowLeft className="size-4" />
-              Back to Repository
-            </Link>
-            <span className="bg-gradient-to-r from-violet-600 to-sky-600 bg-clip-text text-lg font-bold text-transparent">
-              AI Chat
-            </span>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-6 py-8">
-        {initialLoading && (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="size-6 animate-spin text-violet-500" />
-          </div>
-        )}
-
-        {loadError && (
-          <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-rose-700 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-200">
-            {loadError}
-          </div>
-        )}
-
-        {detail && (
-          <>
-            <RepositorySubNav
-              repositoryId={repositoryId}
-              branch={selectedBranch}
-              activeTab="chat"
-            />
-
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h1 className="text-2xl font-semibold">
-                  {detail.owner}/{detail.repository_name}
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                  Ask natural-language questions about this repository.
-                </p>
-              </div>
-              <BranchSelector
-                branches={branches}
-                selectedBranch={selectedBranch ?? detail.default_branch ?? branches[0]?.branch ?? ""}
-                onSelect={handleBranchChange}
-                branchesTruncated={false}
-              />
-            </div>
-
-            <RepositoryChat
-              repositoryId={repositoryId}
-              branch={selectedBranch ?? detail.selected_branch}
-            />
-          </>
-        )}
-      </main>
+    <div className="flex min-h-0 flex-1 flex-col gap-4">
+      <div>
+        <h1 className="text-xl font-semibold">AI Chat</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Ask natural-language questions about this repository.
+        </p>
+      </div>
+      <div className="min-h-0 flex-1">
+        <RepositoryChat
+          repositoryId={repositoryId}
+          branch={selectedBranch ?? ("selected_branch" in detail ? detail.selected_branch : null)}
+        />
+      </div>
     </div>
   );
 }

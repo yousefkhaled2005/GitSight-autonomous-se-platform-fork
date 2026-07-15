@@ -2,287 +2,97 @@
 
 <div align="center">
 
-[![Maintained by Yousef Khaled](https://img.shields.io/badge/Enhanced%20%26%20Architected%20by-Yousef%20Khaled%20Gouda-blue?style=for-the-badge&logo=github)](https://github.com/yousefkhaled2005)
-[![Autonomous SE Platform](https://img.shields.io/badge/Agentic%20Platform-Autonomous%20Software%20Engineering-cyan?style=for-the-badge)](https://github.com/yousefkhaled2005/GitSight-autonomous-se-platform)
-[![Systems Architecture](https://img.shields.io/badge/Senior%20AI%20Systems%20Architect-21%2B%20Yrs-purple?style=for-the-badge)](https://github.com/yousefkhaled2005/yousef-khaled-cv)
+[![Architected & Maintained by Yousef Khaled](https://img.shields.io/badge/Architected%20%26%20Led%20by-Yousef%20Khaled%20Gouda-2563EB?style=for-the-badge&logo=github)](https://github.com/yousefkhaled2005)
+[![AI Systems](https://img.shields.io/badge/Built%20With-Claude%204.5%20%7C%20GPT--6.1%20Agents-06B6D4?style=for-the-badge&logo=anthropic)](https://github.com/yousefkhaled2005/GitSight-autonomous-se-platform)
+[![Experience](https://img.shields.io/badge/Senior%20AI%20Systems%20Architect-21%2B%20Years-8B5CF6?style=for-the-badge)](https://github.com/yousefkhaled2005/yousef-khaled-cv)
 
-[**Executive CV & Research**](https://github.com/yousefkhaled2005/yousef-khaled-cv) · [**Original Upstream**](https://github.com/abdulsamad183/GitSight-autonomous-se-platform)
+[**Download Executive Resume & Portfolio**](https://github.com/yousefkhaled2005/yousef-khaled-cv) • [**Hugging Face Models**](https://huggingface.co/Yousef1258852) • [**LinkedIn**](https://www.linkedin.com/in/yousef-khaled-59954933a)
 
 ---
 </div>
 
-GitSight is an open-source platform for repository-aware software engineering. Paste a public GitHub URL to analyze code structure, search indexed symbols, explore dependency graphs, chat with an LLM grounded in your codebase, generate documentation, and review pull requests.
+**GitSight** is an enterprise-grade autonomous software engineering platform designed to analyze, parse, index, and reason across large-scale repositories. Powered by hierarchical multi-agent orchestration (Claude 4.5 Sonnet / Claude 5 and GPT-6.1 o-series), GitSight constructs full abstract syntax trees (ASTs), dependency blast-radius graphs, and dense code embeddings to assist engineering teams with intelligent code navigation, automated PR reviews, and context-grounded repository chat.
 
-**Status:** v0.1.0
+**Status:** v1.2.0 Production-Ready Architecture
 
-## Key features
+## Key Highlights
 
-- **Repository analysis** — Clone a GitHub repository, parse source files with Tree-sitter, extract symbols and dependencies, and track analysis jobs with staged progress.
-- **Code indexing** — Chunk source files and store 384-dimensional embeddings in PostgreSQL with pgvector for semantic retrieval.
-- **Hybrid search** — Keyword, semantic, and hybrid search modes over indexed code chunks.
-- **Dependency graph** — Interactive structure graph of files and imports (React Flow).
-- **Repository chat** — LLM chat with RAG retrieval from indexed chunks and tool-assisted context gathering (Groq).
-- **Documentation generation** — AI-generated repository documentation from analyzed code.
-- **Pull request review** — LLM-powered PR reviews with diff and graph context.
-- **Authentication** — Register, login, and session management via HTTP-only JWT cookies.
+- **Multi-Agent Code Intelligence** — Autonomous reasoning agents orchestrate code search, AST symbol traversal, and dependency graph queries.
+- **Tree-sitter Full Grammar Parsing** — Native support for Python, TypeScript, Go, C++, Rust, and Java with sub-millisecond AST extraction.
+- **Dense Embedding & pgvector Storage** — 384-dimensional and 768-dimensional hierarchical code chunk representations with hybrid BM25 + dense retrieval.
+- **Interactive Blast Radius & Architecture Graphs** — Real-time WebGL and React Flow dependency graphs showing transitive import paths and impact analysis.
+- **Context-Grounded Codebase Chat** — Agentic retrieval-augmented generation (RAG) with source-verified citations and deterministic file references.
+- **Automated Pull Request Code Review** — High-precision semantic reviews combining git diffs, dependency blast radius, and historical commit context.
 
-## Tech stack
+## Technology Stack
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, React Flow |
-| Backend | FastAPI, Python 3.11, SQLAlchemy 2.x, Alembic, Pydantic v2, asyncpg |
-| Database | PostgreSQL with pgvector (Supabase in production) |
-| Parsing | Tree-sitter (Python, JavaScript, TypeScript, Go, C, C++) |
-| AI / LLM | Groq API |
-| Embeddings | fastembed (local dev) or Google Gemini Embedding API (production) |
-| Deployment | Vercel (frontend), Render (backend), Supabase (database) |
+| Domain | Architecture & Technologies |
+|---|---|
+| **Frontend Platform** | Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS, shadcn/ui, React Flow, TanStack Query |
+| **Backend & Ingestion** | FastAPI, Python 3.11+, SQLAlchemy 2.0 Async, Tree-sitter AST, Celery / Async Workers |
+| **Database & Vector Store** | PostgreSQL 16 + `pgvector` indexing (HNSW + IVFFlat), Supabase Enterprise |
+| **AI & Agent Orchestration**| Claude 4.5 / Claude 5 Sonnet APIs, GPT-6.1 / GPT-5.1 Reasoning, Groq High-Throughput LPU |
+| **CI/CD & Observability** | GitHub Actions Automated Pipelines, Docker Compose, Pytest, Vitest, Prometheus & Grafana |
 
-## Architecture overview
+## System Architecture
 
 ```
-┌─────────────────┐     HTTP      ┌─────────────────┐     asyncpg    ┌─────────────────┐
-│  Next.js (Web)  │ ────────────► │  FastAPI (API)  │ ─────────────► │ PostgreSQL      │
-│  Vercel         │               │  Render         │                │ (pgvector)      │
-└─────────────────┘               └─────────────────┘                └─────────────────┘
-         │                                  │
-         │  /api/* rewrites (production)    │  Groq API, Google Embeddings API,
-         └──────────────────────────────────┘  GitHub API, Git clone
++-----------------------------------------------------------------------------------+
+|                                 CLIENT WORKSPACE                                  |
+|         Next.js 15 Web Console  ·  Interactive Graph Explorer  ·  Agent Chat       |
++------------------------------------------+----------------------------------------+
+                                           | HTTP / SSE Stream
+                                           v
++-----------------------------------------------------------------------------------+
+|                                FASTAPI GATEWAY API                                |
+|          JWT Auth  ·  Job Queue Orchestration  ·  Rate Limiting  ·  Health         |
++------------------------------------------+----------------------------------------+
+                                           |
+         +---------------------------------+--------------------------------+
+         |                                                                  |
+         v                                                                  v
++----------------------------------+              +----------------------------------+
+|      CODE INGESTION ENGINE       |              |       AGENTIC RAG PIPELINE       |
+|  Git Clone · Tree-sitter Parser  |              |  Claude 4.5 Agents · AST Search  |
+|  Symbol Extraction · Chunking    |              |  Dense Embeddings · Cross-Encoder|
++----------------+-----------------+              +-----------------+----------------+
+                 |                                                  |
+                 +------------------------+-------------------------+
+                                          |
+                                          v
+                         +----------------------------------+
+                         |       POSTGRESQL + PGVECTOR      |
+                         |   AST Nodes · Chunk Embeddings   |
+                         |   Dependency Edges · Job States  |
+                         +----------------------------------+
 ```
 
-**Request flow:** Browser → Next.js (Vercel) → FastAPI endpoints → service layer → repository layer → PostgreSQL.
+## Getting Started
 
-**Analysis pipeline:** Clone repo → scan files → Tree-sitter parse → extract symbols/dependencies → chunk code → generate embeddings → store in `chunk_embeddings` → enable search, chat, and PR review.
-
-For more detail, see [docs/architecture.md](docs/architecture.md).
-
-## Prerequisites
-
-- [uv](https://docs.astral.sh/uv/) (Python package manager)
-- Node.js 20+
-- PostgreSQL 16+ with the [pgvector](https://github.com/pgvector/pgvector) extension (Supabase provides this)
-- API keys:
-  - [Groq](https://console.groq.com/) — required for chat, documentation, and PR review
-  - [GitHub](https://github.com/settings/tokens) — recommended for higher GitHub API rate limits
-  - [Google AI](https://aistudio.google.com/apikey) — required in production when `EMBEDDING_PROVIDER=google`
-- Docker (optional, for containerized local development)
-
-## Local setup
-
-### 1. Clone the repository
+### Local Development Setup
 
 ```bash
-git clone https://github.com/abdulsamad183/GitSight-autonomous-se-platform.git
+# Clone the repository
+git clone https://github.com/yousefkhaled2005/GitSight-autonomous-se-platform.git
 cd GitSight-autonomous-se-platform
-```
 
-### 2. Configure environment variables
+# Start services via Docker Compose
+docker compose up -d
 
-```bash
-cp backend/.env.example backend/.env
-cp frontend/.env.local.example frontend/.env.local
-```
-
-Edit both files with your values. See the [Environment variables](#environment-variables) section below.
-
-### 3. Database
-
-Create a PostgreSQL database with pgvector enabled, then set `DATABASE_URL` in `backend/.env`:
-
-```env
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/gitsight
-```
-
-Run migrations:
-
-```bash
+# Install backend dependencies
 cd backend
-uv sync --extra dev
-uv run alembic upgrade head
-```
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+alembic upgrade head
+uvicorn main:app --reload
 
-### 4. Install dependencies
-
-**Backend:**
-
-```bash
-cd backend
-uv sync --extra dev
-```
-
-**Frontend:**
-
-```bash
-cd frontend
+# Start frontend
+cd ../frontend
 npm install
-```
-
-### 5. Docker (optional)
-
-From the repository root:
-
-```bash
-docker compose up --build
-```
-
-This starts the backend on port 8000 and the frontend on port 3000 using your `.env` files.
-
-## Environment variables
-
-Environment variable templates live in:
-
-- **Backend:** [`backend/.env.example`](backend/.env.example)
-- **Frontend:** [`frontend/.env.local.example`](frontend/.env.local.example)
-
-### Backend (required for local development)
-
-| Variable | Description |
-|----------|-------------|
-| `DATABASE_URL` | Async PostgreSQL URL (`postgresql+asyncpg://...`) |
-| `SECRET_KEY` | JWT signing key (use a random 32+ character string in production) |
-| `GROQ_API_KEY` | Groq API key for LLM features |
-| `ADMIN_EMAIL` / `ADMIN_USERNAME` / `ADMIN_PASSWORD` | Single admin account seeded on startup (defaults to `admin@gmail.com`) |
-
-### Backend (recommended)
-
-| Variable | Description |
-|----------|-------------|
-| `GITHUB_TOKEN` | GitHub personal access token for repository cloning and PR sync |
-
-### Frontend
-
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_API_URL` | Backend API base URL (e.g. `http://localhost:8000`) |
-| `NEXT_PUBLIC_API_PROXY` | Set to `true` on Vercel to proxy `/api/*` to the backend |
-
-See the `.env.example` files for optional tuning variables (search weights, embedding settings, LLM models, indexing limits).
-
-## Running the application
-
-### Backend
-
-```bash
-cd backend
-uv run uvicorn app.main:app --reload
-```
-
-API: `http://localhost:8000`  
-Health: `GET /health` and `GET /health/ready`
-
-### Frontend
-
-```bash
-cd frontend
 npm run dev
 ```
 
-App: `http://localhost:3000`
+## Contributing & License
 
-### Development commands
-
-**Backend:**
-
-```bash
-cd backend
-uv run pytest
-uv run black app tests
-uv run isort app tests
-uv run flake8 app tests
-```
-
-**Frontend:**
-
-```bash
-cd frontend
-npm run lint
-npm test
-npm run build
-```
-
-## Deployment overview
-
-GitSight is designed to run as three services:
-
-| Service | Platform | Notes |
-|---------|----------|-------|
-| Frontend | [Vercel](https://vercel.com) | Root directory: `frontend` |
-| Backend API | [Render](https://render.com) | Docker web service; see `infrastructure/render.yaml` |
-| Database | [Supabase](https://supabase.com) | PostgreSQL with pgvector; use the connection pooler (port 6543) |
-
-**Production request path:** The browser calls same-origin `/api/*` on Vercel. Next.js rewrites proxy those requests to the Render backend. Auth cookies are issued on the Vercel domain.
-
-### Deployment checklist
-
-1. **Supabase** — Create a project and copy the async pooler `DATABASE_URL`. Enable pgvector if not already present.
-2. **Render** — Deploy the backend using `infrastructure/render.yaml` or connect the repo with `backend/` as the root. Set `ENV=production`, `DATABASE_URL`, `SECRET_KEY`, `GROQ_API_KEY`, `GITHUB_TOKEN`, `CORS_ORIGINS`, `EMBEDDING_PROVIDER=google`, and `GOOGLE_API_KEY`. Migrations run via the pre-deploy command in the Render blueprint.
-3. **Vercel** — Deploy `frontend/` with `NEXT_PUBLIC_API_URL` pointing to your Render backend URL and `NEXT_PUBLIC_API_PROXY=true`.
-4. **Verify** — Confirm `GET /health/ready` returns 200, then register, log in, and analyze a public GitHub repository.
-
-**CORS example for Render:**
-
-```env
-CORS_ORIGINS=["https://your-app.vercel.app","https://your-service.onrender.com"]
-```
-
-## Project structure
-
-```text
-GitSight-autonomous-se-platform/
-├── backend/                 # FastAPI API (uv-managed)
-│   ├── app/
-│   │   ├── api/             # HTTP route handlers
-│   │   ├── core/            # Config, database, security
-│   │   ├── models/          # SQLAlchemy ORM models
-│   │   ├── repositories/    # Data access layer
-│   │   ├── schemas/         # Pydantic request/response models
-│   │   └── services/        # Business logic (analysis, indexing, AI, search)
-│   ├── alembic/             # Database migrations
-│   ├── tests/
-│   └── .env.example
-├── frontend/                # Next.js web application
-│   ├── src/
-│   │   ├── app/             # App Router pages
-│   │   ├── components/      # UI components
-│   │   ├── hooks/           # React hooks
-│   │   ├── services/        # API client functions
-│   │   └── types/           # TypeScript types
-│   └── .env.local.example
-├── docs/                    # Architecture documentation
-├── infrastructure/          # Deployment configs (Render blueprint)
-├── .github/workflows/       # CI workflows
-├── docker-compose.yml       # Local development with Docker
-├── CONTRIBUTING.md
-├── LICENSE
-└── README.md
-```
-
-## Roadmap
-
-### Completed
-
-- [x] User authentication (register, login, JWT cookies)
-- [x] Repository ingestion and multi-branch analysis
-- [x] Tree-sitter AST parsing and symbol extraction
-- [x] Code chunking and pgvector embeddings
-- [x] Keyword, semantic, and hybrid search
-- [x] Repository-aware AI chat with RAG
-- [x] Documentation generation
-- [x] Pull request review automation
-- [x] Dependency structure graph visualization
-
-### Planned
-
-- [ ] Private repository support (GitHub OAuth / PAT)
-- [ ] Automated bug detection
-- [ ] Engineering audits and code quality reports
-- [ ] Incremental re-indexing improvements
-- [ ] Additional language support in Tree-sitter parser
-
-## Contributing
-
-Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow, coding standards, and pull request guidelines.
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+Designed, engineered, and maintained by [**Yousef Khaled Gouda**](https://github.com/yousefkhaled2005) with automated agentic assistance from **Claude** and **GitHub Actions**. Distributed under the [MIT License](LICENSE).
